@@ -88,8 +88,6 @@ func processCSV(fileContent inputFile, writerChannel chan<- map[string]string) {
 		os.Exit(1)
 	}
 
-	fmt.Println(headers)
-
 	for {
 		line, err = reader.Read()
 
@@ -101,10 +99,8 @@ func processCSV(fileContent inputFile, writerChannel chan<- map[string]string) {
 		if err != nil {
 			log.Fatal(err)
 		}
-
 		//fmt.Println(line)
 		record, err := processLine(headers, line)
-
 		fmt.Println(record)
 		if err != nil {
 			fmt.Printf("Error: %v", err)
@@ -124,11 +120,10 @@ func processLine(headers, dataSlice []string) (map[string]string, error) {
 	recordMap := make(map[string]string)
 
 	for i, name := range headers {
-		fmt.Println(i, name)
 		recordMap[name] = dataSlice[i]
 	}
 
-	fmt.Println(recordMap)
+	//fmt.Println(recordMap)
 
 	return recordMap, nil
 }
@@ -166,11 +161,11 @@ func writeJSONFile(csvPath string, writerChannel <-chan map[string]string, done 
 func createStringWriter(csvPath string) func(string, bool) {
 
 	jsonDir := filepath.Dir(csvPath)
-	fmt.Println(jsonDir)
+	//fmt.Println(jsonDir)
 	jsonName := fmt.Sprintf("%s.json", strings.TrimSuffix(filepath.Base(csvPath), ".csv"))
-	fmt.Println(jsonName)
+	//fmt.Println(jsonName)
 	jsonLocation := filepath.Join(jsonDir, jsonName)
-	fmt.Println(jsonLocation)
+	//fmt.Println(jsonLocation)
 
 	f, err := os.Create(jsonLocation)
 
@@ -220,13 +215,12 @@ func fClose(file *os.File) {
 }
 
 func main() {
-	//fmt.Println("Inside Main")
 	flag.Usage = func() {
 		fmt.Printf("Usage: %s [options] <csvFile>\nOptions:\n", os.Args[0])
 		flag.PrintDefaults()
 	}
 	fileContent, err := getFileContent()
-	fmt.Println(fileContent, err)
+	//fmt.Println(fileContent, err)
 	if err != nil {
 		os.Exit(1)
 	}
